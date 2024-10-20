@@ -25,6 +25,9 @@ export class User {
 
     @Prop({ type: Types.ObjectId, ref: 'Srms'})
     srms?: Types.ObjectId;
+
+    @Prop({ type: Types.ObjectId, ref: 'Regions'})
+    regions?: Types.ObjectId;
     
 }
 

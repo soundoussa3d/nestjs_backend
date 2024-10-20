@@ -7,6 +7,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { SeederModule } from './seeder/seeder.module';
 import { UsersModule } from './users/users.module';
 import { SrmsModule } from './srms/srms.module';
+import { RegionsService } from './regions/regions.service';
+import { RegionsController } from './regions/regions.controller';
+import { RegionsModule } from './regions/regions.module';
 
 
 @Module({
@@ -17,8 +20,9 @@ import { SrmsModule } from './srms/srms.module';
     SeederModule, 
     UsersModule, 
     SrmsModule, 
+    RegionsModule, 
   ],
-  controllers: [AppController, ],
+  controllers: [AppController,  ],
   providers: [AppService, ],
 })
 export class AppModule {}

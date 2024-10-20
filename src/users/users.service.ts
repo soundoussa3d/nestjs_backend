@@ -8,6 +8,7 @@ import { Role, RoleDocument } from 'src/schemas/role.schema';
 import { CreateAdminDto } from './dto/admin.dto';
 import * as bcrypt from 'bcryptjs';
 import { ChangePasswordDto } from './dto/password.dto';
+import { CreateManagerDto } from './dto/manager.dto';
 
 @Injectable()
 export class UsersService {
@@ -34,7 +35,7 @@ export class UsersService {
         return createdUser.save();
     }
 
-    //create Admin user 
+    //!create Admin user 
     async createAdmin(createAdminDto: CreateAdminDto): Promise<{user:User,password:string}> {
 
         // Generate a password if not provided in the DTO
@@ -66,6 +67,40 @@ export class UsersService {
         return {user:createdAdmin,password:password};
     }
 
+
+    //!create manager user 
+    async createManager(createManagerDto: CreateManagerDto): Promise<{user:User,password:string}> {
+
+        // Generate a password if not provided in the DTO
+        const password = this.generatePassword();
+
+        // Hash the generated password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Check if the type is "admin"
+        if (createManagerDto.type === 'manager') {
+            // Search for the "admin" role in the Role collection
+            const adminRole = await this.roleModel.findOne({ name: 'manager' }).exec();
+            if (!adminRole) {
+                throw new NotFoundException(`Role 'admin' not found`);
+            }
+
+            // Assign the found role's ID to the user
+            createManagerDto.role = adminRole._id.toString();
+        }
+
+        // Create the admin user
+        const createdManager = new this.userModel({
+            ...createManagerDto,
+            password: hashedPassword, // Save hashed password
+        });
+
+        await createdManager.save();
+        return {user:createdManager,password:password};
+    }
+
+
     //!change password 
     // Change password function
     async changePassword(userId: string, changePasswordDto: ChangePasswordDto): Promise<void> {
@@ -91,7 +126,7 @@ export class UsersService {
         user.password = hashedNewPassword;
         await user.save();
     }
-    
+
 
     async findAll(): Promise<User[]> {
         return this.userModel.find().populate('role').exec();
