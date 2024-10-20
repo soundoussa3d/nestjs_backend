@@ -22,6 +22,9 @@ export class User {
 
     @Prop({ type: Types.ObjectId, ref: 'Role', required: true })
     role: Types.ObjectId; // Assuming you have a Role model@Prop({ required: true })
+
+    @Prop({ type: Types.ObjectId, ref: 'Srms'})
+    srms?: Types.ObjectId;
     
 }
 

@@ -20,7 +20,7 @@ export class Srm {
     @Prop({ required: true })
     telph: string; // Assuming this is a phone number
 
-    @Prop({ required: true, enum: ['active', 'inactive'], default: 'active' }) // Adding status field
+    @Prop({ required: true, enum: ['active', 'inactive'], default: 'inactive' }) // Adding status field
     status: string;
 }
 

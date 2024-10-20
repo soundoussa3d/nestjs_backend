@@ -4,15 +4,35 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Role, RoleDocument } from 'src/schemas/role.schema';
+import { CreateAdminDto } from './dto/admin.dto';
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectModel(User.name) private userModel: Model<UserDocument>,
+        @InjectModel(Role.name) private roleModel: Model<RoleDocument>,
     ) {}
 
     async create(createUserDto: CreateUserDto): Promise<User> {
         const createdUser = new this.userModel(createUserDto);
+        return createdUser.save();
+    }
+    async createAdmin(createAdminDto: CreateAdminDto): Promise<User> {
+        // Check if the type is "admin"
+        if (createAdminDto.type === 'admin') {
+            // Search for the "admin" role in the Role collection
+            const adminRole = await this.roleModel.findOne({ name: 'admin' }).exec();
+            if (!adminRole) {
+                throw new NotFoundException(`Role 'admin' not found`);
+            }
+
+            // Assign the found role's ID to the user
+            createAdminDto.role = adminRole._id.toString();
+        }
+
+        // Create and save the user
+        const createdUser = new this.userModel(createAdminDto);
         return createdUser.save();
     }
 
