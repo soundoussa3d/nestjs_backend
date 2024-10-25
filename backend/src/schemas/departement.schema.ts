@@ -11,6 +11,9 @@ export class Departement {
 
     @Prop({ required: true})
     description: string; // description for the departement
+
+    @Prop({ required: true})
+    region: string;
 }
 
 export const DepartementSchema = SchemaFactory.createForClass(Departement);

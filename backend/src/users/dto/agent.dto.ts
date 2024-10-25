@@ -2,7 +2,24 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { IsString, IsNotEmpty, IsEnum, IsMongoId, IsOptional } from 'class-validator';
 
-export class CreateManagerDto {
+export class CreateAgentDto {
+
+    @IsString()
+    @IsNotEmpty()
+    nom: string;
+
+    @IsString()
+    @IsNotEmpty()
+    prenom: string;
+
+    @IsString()
+    @IsNotEmpty()
+    email: string;
+
+    @IsString()
+    @IsNotEmpty()
+    teleph: string;
+
     @IsString()
     @IsNotEmpty()
     username: string;
@@ -21,6 +38,12 @@ export class CreateManagerDto {
     @IsNotEmpty()
     role: string; // MongoDB ObjectId string for Role reference
 
+    @IsMongoId()
+    @IsOptional()
+    forms: string[];
+
+    @IsNotEmpty()
+    departementId:string;
 }
 
-export class UpdateManagerDto extends PartialType(CreateManagerDto) {}
+export class UpdateAgentDto extends PartialType(CreateAgentDto) {}

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { SrmsService } from './srms.service';
 import { Srm } from 'src/schemas/srms.schema';
 import { CreateSrmDto } from './dto/create-srm.dto';
@@ -23,7 +23,7 @@ export class SrmsController {
         return this.srmService.findOne(id);
     }
 
-    @Patch(':id')
+    @Put(':id')
     update(@Param('id') id: string, @Body() updateSrmDto: UpdateSrmDto): Promise<Srm> {
         return this.srmService.update(id, updateSrmDto);
     }

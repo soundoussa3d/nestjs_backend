@@ -1,5 +1,5 @@
 // src/regions/dto/create-region.dto.ts
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateRegionDto {
     @IsNotEmpty()
@@ -25,4 +25,7 @@ export class CreateRegionDto {
     @IsNotEmpty()
     @IsEnum(['active', 'inactive'])
     status: string;
+
+    @IsNotEmpty()
+    managerId:string;
 }

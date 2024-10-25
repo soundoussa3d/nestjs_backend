@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { DepartementService } from './departement.service';
 import { CreateDepartementDto } from './dto/create-departement.dto';
 import { Departement } from 'src/schemas/departement.schema';
 
-@Controller('departement')
+@Controller('departements')
 export class DepartementController {
     constructor(private readonly departementService: DepartementService) {}
 
@@ -22,7 +22,7 @@ export class DepartementController {
         return this.departementService.findOne(id);
     }
 
-    @Patch(':id')
+    @Put(':id')
     update(@Param('id') id: string, @Body() updateDepartementDto: CreateDepartementDto): Promise<Departement> {
         return this.departementService.update(id, updateDepartementDto);
     }

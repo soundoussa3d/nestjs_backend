@@ -9,6 +9,7 @@ import { CreateAdminDto } from './dto/admin.dto';
 import * as bcrypt from 'bcryptjs';
 import { ChangePasswordDto } from './dto/password.dto';
 import { CreateManagerDto } from './dto/manager.dto';
+import { CreateAgentDto } from './dto/agent.dto';
 
 @Injectable()
 export class UsersService {
@@ -100,6 +101,38 @@ export class UsersService {
         return {user:createdManager,password:password};
     }
 
+     //!create agent user 
+     async createAgent(createAgentDto: CreateAgentDto): Promise<{user:User,password:string}> {
+
+        // Generate a password if not provided in the DTO
+        const password = this.generatePassword();
+
+        // Hash the generated password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Check if the type is "admin"
+        if (createAgentDto.type === 'agent') {
+            // Search for the "admin" role in the Role collection
+            const adminRole = await this.roleModel.findOne({ name: 'agent' }).exec();
+            if (!adminRole) {
+                throw new NotFoundException(`Role 'admin' not found`);
+            }
+
+            // Assign the found role's ID to the user
+            createAgentDto.role = adminRole._id.toString();
+        }
+
+        // Create the admin user
+        const createdAgent = new this.userModel({
+            ...createAgentDto,
+            password: hashedPassword, // Save hashed password
+        });
+
+        await createdAgent.save();
+        return {user:createdAgent,password:password};
+    }
+
 
     //!change password 
     // Change password function
@@ -128,8 +161,22 @@ export class UsersService {
     }
 
 
-    async findAll(): Promise<User[]> {
-        return this.userModel.find().populate('role').exec();
+    async findAll(type?: string): Promise<User[]> {
+        const query: any = {};
+        // If type is provided, add it to the query
+        if (type) {
+            query.type = type;
+        }
+        return this.userModel.find(query).populate('role').exec();
+    }
+
+     // Method to find a user by username
+    async findByUsername(username: string): Promise<User | undefined> {
+        const user = await this.userModel.findOne({ username }).exec();
+        if (!user) {
+        throw new NotFoundException(`User with username ${username} not found`);
+        }
+        return user;
     }
 
     async findOne(id: string): Promise<User> {

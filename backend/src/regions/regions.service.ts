@@ -13,9 +13,14 @@ export class RegionsService {
         return createdRegion.save();
     }
 
-    async findAll(): Promise<Region[]> {
-        return this.regionModel.find().exec();
-    }
+    async findAll(managerId?: string): Promise<Region[]> {
+        const query = managerId ? { managerId } : {}; // If managerId is provided, filter by it
+      
+        return this.regionModel
+          .find(query) // Pass the query object (with or without managerId)
+           // Ensure it populates the manager details
+          .exec();
+      }
 
     async findOne(id: string): Promise<Region> {
         const region = await this.regionModel.findById(id).exec();

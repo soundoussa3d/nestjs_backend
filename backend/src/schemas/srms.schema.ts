@@ -22,6 +22,9 @@ export class Srm {
 
     @Prop({ required: true, enum: ['active', 'inactive'], default: 'inactive' }) // Adding status field
     status: string;
+
+    @Prop({ required: true })
+    admin: string; 
 }
 
 export const SrmSchema = SchemaFactory.createForClass(Srm);

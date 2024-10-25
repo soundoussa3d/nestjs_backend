@@ -11,6 +11,7 @@ import { RegionsService } from './regions/regions.service';
 import { RegionsController } from './regions/regions.controller';
 import { RegionsModule } from './regions/regions.module';
 import { DepartementModule } from './departement/departement.module';
+import { FormulaireModule } from './formulaire/formulaire.module';
 
 
 @Module({
@@ -22,7 +23,7 @@ import { DepartementModule } from './departement/departement.module';
     UsersModule, 
     SrmsModule, 
     RegionsModule, 
-    DepartementModule, 
+    DepartementModule, FormulaireModule, 
   ],
   controllers: [AppController,  ],
   providers: [AppService, ],

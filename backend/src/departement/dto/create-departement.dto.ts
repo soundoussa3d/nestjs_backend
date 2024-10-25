@@ -8,5 +8,9 @@ export class CreateDepartementDto {
 
     @IsNotEmpty()
     @IsString()
-    code: string;
+    description: string;
+
+    @IsNotEmpty()
+    @IsString()
+    region: string;
 }

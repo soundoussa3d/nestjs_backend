@@ -28,6 +28,21 @@ export class User {
 
     @Prop({ type: Types.ObjectId, ref: 'Regions'})
     regions?: Types.ObjectId;
+
+    @Prop()
+    nom?: string;
+
+    @Prop()
+    prenom?: string;
+
+    @Prop()
+    email?: string;
+
+    @Prop()
+    teleph?: string;
+
+    @Prop()
+    departementId?: string;
     
 }
 

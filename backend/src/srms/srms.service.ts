@@ -35,8 +35,8 @@ export class SrmsService {
     }
 
     async remove(id: string): Promise<void> {
-        const result = await this.srmModel.deleteOne({ _id: id }).exec();
-        if (result.deletedCount === 0) {
+        const result = await this.srmModel.findByIdAndDelete(id).exec();
+        if (!result) {
             throw new NotFoundException(`SRM with id ${id} not found`);
         }
     }
