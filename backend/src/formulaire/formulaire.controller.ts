@@ -15,8 +15,12 @@ export class FormulaireController {
   }
 
   @Get()
-  async findAll(@Query('createdBy') createdBy?: string): Promise<Formulaire[]> {
-    return this.formService.findAll(createdBy);
+  async findAll(
+    @Query('createdBy') createdBy?: string,
+    @Query('published') published?: string,
+  ): Promise<Formulaire[]> {
+    const isPublished = published === 'true' ? true : published === 'false' ? false : undefined;
+    return this.formService.findAll(createdBy, isPublished);
   }
 
   @Get(':id')

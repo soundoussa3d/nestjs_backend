@@ -78,17 +78,41 @@ export class UserSeeder {
                 password: await this.hashPassword('manager123'),
                 type: 'manager',
                 role: '6714ac76172d14eb751d26e9',
-            },/*
+            },
             {
-                username: 'agent',
+                nom:'saad',
+                prenom:'saad',
+                email:'said123@gmail.com',
+                teleph:'0612854796',
+                username: 'said123',
                 password: await this.hashPassword('agent123'),
                 type: 'agent',
                 role: '6714ac77172d14eb751d26ec',
-            },*/
+                departementId:'67190642d51430d748f4e71b'
+            },
+            {
+                nom:'mahmoud',
+                prenom:'mahmoud',
+                email:'mahmoud123@gmail.com',
+                teleph:'0612854796',
+                username: 'mahmoud123',
+                password: await this.hashPassword('agent123'),
+                type: 'agent',
+                role: '6714ac77172d14eb751d26ec',
+                departementId:'67190642d51430d748f4e71b'
+            },
         ];
 
-        await this.userModel.deleteMany({}); // Clear existing users
-        await this.userModel.insertMany(users);
+        for (const user of users) {
+            const existingUser = await this.userModel.findOne({ username: user.username });
+
+            if (existingUser) {
+                this.logger.log(`User ${user.username} already exists. Skipping...`);
+            } else {
+                await this.userModel.create(user);
+                this.logger.log(`User ${user.username} inserted successfully.`);
+            }
+        }
         this.logger.log('Users seeded successfully');
     }
 

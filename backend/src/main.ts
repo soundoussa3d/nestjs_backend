@@ -24,12 +24,12 @@ async function bootstrap() {
    const roleSeeder = app.select(SeederModule).get(RoleSeederService);
 
    // Seed roles
-   //await roleSeeder.seed();
+   await roleSeeder.seed();
 
    const userSeeder = app.get(UserSeeder);
-   //await userSeeder.seed();
+   await userSeeder.seed();
 
    const regionSeeder = app.select(SeederModule).get(RegionSeederService);
-   //await regionSeeder.seed();
+   await regionSeeder.seed();
 }
 bootstrap();

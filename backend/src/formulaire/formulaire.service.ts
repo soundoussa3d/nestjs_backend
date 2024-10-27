@@ -15,8 +15,17 @@ export class FormulaireService {
     return form.save();
   }
 
-  async findAll(createdBy?: string): Promise<Formulaire[]> {
-    const filter = createdBy ? { createdBy } : {}; // Apply filter only if createdBy is provided
+  async findAll(createdBy?: string, published?: boolean): Promise<Formulaire[]> {
+    const filter: any = {};
+  
+    if (createdBy) {
+      filter.createdBy = createdBy;
+    }
+  
+    if (published !== undefined) {
+      filter.published = published;
+    }
+  
     return this.formModel.find(filter).exec();
   }
 

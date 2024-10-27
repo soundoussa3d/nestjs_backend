@@ -128,6 +128,7 @@ export class UsersService {
             ...createAgentDto,
             password: hashedPassword, // Save hashed password
         });
+        console.log("password : ", password);
 
         await createdAgent.save();
         return {user:createdAgent,password:password};
